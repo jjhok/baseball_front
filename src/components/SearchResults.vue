@@ -6,7 +6,7 @@
                 <v-list-tile
                     :key="item.name"
                     avatar
-                    dark
+                    @click="goTo(item.key)"
                     >
                     <v-list-tile-avatar>
                         <img :src="item.avatar">
@@ -41,11 +41,19 @@
                         name: this.results[0].name[index].split("|")[0],
                         avatar: this.results[0].avatar[index],
                         master: this.results[0].master[index].split("|")[0],
+                        key: this.results[0].link[index].split("=")[1]
                     };
                     data.push(element);
                     
                 }
                 return data;
+            }
+        },
+        methods: {
+            goTo(key) {
+                console.log(key);
+                // this.$router.push({path: "/report/" + key })
+                this.$router.push({name: "report", params: { teamKey: key }})
             }
         },
     }
