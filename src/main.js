@@ -69,113 +69,29 @@ Vue.prototype.$memberSelectorDict = [
     limit : -1,
     },
 ]
-Vue.prototype.$recordDict = [
-  {
-    index: "kyungkisu",
-    selector : "#sContent > div.s_content > div.scon_players._helix > ul > li > dl > form > dt",
-    startAt: 0,
-    attr : "text",
-    limit : -1,
-  },
-  {
-    index: "tayul",
-    selector : "#sContent > div.s_content > div.scon_players._helix > ul > li > dl > form > dt",
-    startAt: 0,
-    attr : "text",
-    limit : -1,
-  },
-  {
-    index: "tasuk",
-    selector : "#sContent > div.s_content > div.scon_players._helix > ul > li > dl > form > dt",
-    startAt: 0,
-    attr : "text",
-    limit : -1,
-  },
-  {
-    index: "tasu",
-    selector : "#sContent > div.s_content > div.scon_players._helix > ul > li > dl > form > dt",
-    startAt: 0,
-    attr : "text",
-    limit : -1,
-  },
-  {
-    index: "games",
-    selector : "#sContent > div.s_content > div.scon_players._helix > ul > li > dl > form > dt",
-    startAt: 0,
-    attr : "text",
-    limit : -1,
-  },
-  {
-    index: "games",
-    selector : "#sContent > div.s_content > div.scon_players._helix > ul > li > dl > form > dt",
-    startAt: 0,
-    attr : "text",
-    limit : -1,
-  },
-  {
-    index: "games",
-    selector : "#sContent > div.s_content > div.scon_players._helix > ul > li > dl > form > dt",
-    startAt: 0,
-    attr : "text",
-    limit : -1,
-  },
-  {
-    index: "games",
-    selector : "#sContent > div.s_content > div.scon_players._helix > ul > li > dl > form > dt",
-    startAt: 0,
-    attr : "text",
-    limit : -1,
-  },
-  {
-    index: "games",
-    selector : "#sContent > div.s_content > div.scon_players._helix > ul > li > dl > form > dt",
-    startAt: 0,
-    attr : "text",
-    limit : -1,
-  },
-  {
-    index: "games",
-    selector : "#sContent > div.s_content > div.scon_players._helix > ul > li > dl > form > dt",
-    startAt: 0,
-    attr : "text",
-    limit : -1,
-  },
-  {
-    index: "games",
-    selector : "#sContent > div.s_content > div.scon_players._helix > ul > li > dl > form > dt",
-    startAt: 0,
-    attr : "text",
-    limit : -1,
-  },
-  {
-    index: "games",
-    selector : "#sContent > div.s_content > div.scon_players._helix > ul > li > dl > form > dt",
-    startAt: 0,
-    attr : "text",
-    limit : -1,
-  },
-  {
-    index: "games",
-    selector : "#sContent > div.s_content > div.scon_players._helix > ul > li > dl > form > dt",
-    startAt: 0,
-    attr : "text",
-    limit : -1,
-  },
-  {
-    index: "games",
-    selector : "#sContent > div.s_content > div.scon_players._helix > ul > li > dl > form > dt",
-    startAt: 0,
-    attr : "text",
-    limit : -1,
-  },
-  {
-    index: "games",
-    selector : "#sContent > div.s_content > div.scon_players._helix > ul > li > dl > form > dt",
-    startAt: 0,
-    attr : "text",
-    limit : -1,
-  },
-]
+
+
+Vue.prototype.$years = []
+for (let index = 2017; index < 2019; index++) {
+  Vue.prototype.$years.push(index)
+};
+
+Vue.prototype.$labels = [
+  "경기수", "타율", "타석", "타수", "득점", "총안타", "1루타", "2루타", "3루타", "홈런", "루타", "타점", "도루", "도루자", "희타", "희비", "볼넷", "고의4구", "사구", "삼진", "병살", "장타율", "출루율", "도루성공률", "멀티히트", "OPS", "BB/K", "장타/안타"
+];
+
+Vue.prototype.$recordDict = []
+for (let index = 0; index < Vue.prototype.$labels.length; index++) {
+  Vue.prototype.$recordDict.push(
+    {
+      index: Vue.prototype.$labels[index],
+      selector : "#Content > div > div.c_content > div.pyMenu > div.py_content > div > div.recordwr > div.hitter_section.on > div > div.score_record > ul > li:nth-child(" + (index+1) +") > span.score",
+      startAt: 0,
+      attr : "text",
+      limit : -1,
+    },
+  )  
+}
 
 
 new Vue({
