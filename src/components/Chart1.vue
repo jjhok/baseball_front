@@ -1,20 +1,25 @@
 <template>
     <div>
+        <v-layout row wrap>
+            <div v-for="member in members" :key="member">
+                <v-checkbox :label="member" v-model="selectedMembers" :value="member"></v-checkbox>
+            </div>
+        </v-layout>
         <apexchart  type="line" :options="options" :series="series"></apexchart>
-        <v-btn color="error" @click="updateChart">updateData</v-btn>
+        <v-btn color="error" @click="parseData">updateData</v-btn>
     </div>
 </template>
 
 <script>
-import VueApexCharts from 'vue-apexcharts'
 
     export default {
         mounted() {
             var years = [];
-                this.$years.forEach(element => {
-                    years.push(element);
-                });
-                this.options.xaxis.categories = years;
+            this.$years.forEach(element => {
+                years.push(element);
+            });
+            this.options.xaxis.categories = years;
+            this.parseData();
         },
         props: {
             objects: {
@@ -26,7 +31,7 @@ import VueApexCharts from 'vue-apexcharts'
             return {
                 options: {
                     chart: {
-                        id: 'vuechart-example',
+                        id: 'vchart1',
                     },
                     xaxis: {
                         categories: this.$years,
@@ -37,27 +42,50 @@ import VueApexCharts from 'vue-apexcharts'
                         max: 1,
                         tickAmount: 5
                     },
-
-
+                    
                 },
-                series: []
+                series: [],
+                members: [],
+                parsedData: {},
+                selectedMembers: [],
             }
         },
         methods: {
-            updateChart() {
-                var parsedData = [];
-                
+            parseData() {
+                this.parsedData = {};
+
                 for(var key in this.objects) {
                     var parsedEachData = [];
                     this.$years.forEach(year => {
-                        parsedEachData.push(this.objects[key][year]['record']['타율']);
+                        parsedEachData.push(parseFloat(parseFloat(this.objects[key][year]['record']['타율']).toFixed(3)));
                     });
-                    parsedData.push({
-                        name: key,
-                        data: parsedEachData
-                    });
+                    this.parsedData[key] = parsedEachData;
+                    // this.parsedData.push({
+                    //     name: key,
+                    //     data: parsedEachData
+                    // });
+                    this.members.push(key);
                 }
-                this.series = parsedData;
+
+            },
+        },
+        watch: {
+            selectedMembers(newValue, oldValue) {
+                if (newValue.length > oldValue.length) {
+                    var member = newValue.filter((item) => {
+                        return oldValue.indexOf(item) < 0
+                    });
+                    this.series.push( {
+                        name: member,
+                        data: this.parsedData[member]
+                    });
+                } else {
+                    var member = oldValue.filter((item) => {
+                        return newValue.indexOf(item) < 0
+                    });
+                    this.series.pop(member);
+
+                }
             }
         },
     }
