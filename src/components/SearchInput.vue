@@ -37,13 +37,17 @@ import axios from 'axios';
                     selectorDict : this.$teamSelectorDict
                 }
                 console.log(params);
-                axios.post('/api/crawler', params)
+                axios.post('/api/crawler', params, {
+                    headers: {
+                        'Content-Type': 'application/json; charset=utf-8'
+                    }
+                })
                 .then(response => {
                     this.$emit('update', response.data);
                 })
                 .catch(response => {
                     alert("문제가 발생했습니다.");
-                    console.log(response.data);
+                    console.log(response);
                 })
                 .then(() => {
                     this.isLoading = false;

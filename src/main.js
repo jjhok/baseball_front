@@ -5,6 +5,10 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
+import VueApexCharts from 'vue-apexcharts'
+Vue.use(VueApexCharts)
+Vue.component('apexchart', VueApexCharts)
+
 import Search from './components/Search.vue';
 import Report from './components/Report.vue';
 
@@ -72,13 +76,13 @@ Vue.prototype.$memberSelectorDict = [
 
 
 Vue.prototype.$years = []
-for (let index = 2017; index < 2019; index++) {
-  Vue.prototype.$years.push(index)
-};
+for (let index = 2015; index < 2019; index++) {
+  Vue.prototype.$years.push(index);
+}
 
 Vue.prototype.$labels = [
   "경기수", "타율", "타석", "타수", "득점", "총안타", "1루타", "2루타", "3루타", "홈런", "루타", "타점", "도루", "도루자", "희타", "희비", "볼넷", "고의4구", "사구", "삼진", "병살", "장타율", "출루율", "도루성공률", "멀티히트", "OPS", "BB/K", "장타/안타"
-];
+]
 
 Vue.prototype.$recordDict = []
 for (let index = 0; index < Vue.prototype.$labels.length; index++) {

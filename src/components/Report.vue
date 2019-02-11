@@ -1,26 +1,36 @@
 <template>
-    <div>
-        HELLO REPORT<br>
+    <div id="report">
         {{ this.$route.params.teamKey }}<br>
-        {{ records }}
-        <v-btn color="success" @click="test">text</v-btn>
+        {{ memberCount }} 명중 {{ parseInt(loadedCount / this.$years.length) }} 불러옴.<br>
+        <Chart1 :objects="records" />
+        <span v-text="records"></span><br>
+        <v-btn color="success" @click="test" :loading="!isLoaded">TEST</v-btn>
     </div>
 </template>
 
 <script>
 import axios from "axios";
+import { timeout } from 'q';
+import Chart1 from './Chart1.vue';
+
     export default {
+        components: {
+            Chart1,
+        },
         created() {
             const teamUrl = this.$teamLink + this.$route.params.teamKey
             console.log(teamUrl);
+            
             var params = {
                 method: 'bs4',
                 pageUrls : [teamUrl],
                 selectorDict: this.$memberSelectorDict
             }
+
             axios.post('/api/crawler', params)
             .then(response => {
-                for (let index = 0; index < response.data[0].name.length; index++) {
+                this.memberCount = response.data[0].name.length;
+                for (let index = 0; index < this.memberCount; index++) {
                     var code = response.data[0].code[index].split("=")[1];
                     var name = response.data[0].name[index];
 
@@ -48,6 +58,7 @@ import axios from "axios";
                             var name = response.data[0].name[index]
                             
                             this.records[name][year] = {record};
+                            this.loadedCount += 1;
                         }) 
                     })
                        
@@ -61,13 +72,26 @@ import axios from "axios";
         },
         data() {
             return {
+                teamKey: this.$route.params.teamKey,
+                memberCount: 0,
+                loadedCount: 0,
+                isLoaded: false,
                 labels: this.$recordLabels,
-                records: {}
+                records: {},
+            }
+        },
+        watch: {
+            loadedCount(newValue, oldValue) {
+                if (this.memberCount > 0 && (this.memberCount * this.$years.length) === this.loadedCount) {
+                    this.isLoaded = true;
+                }
             }
         },
         methods: {
+            
             test() {
-                alert(Object.keys(this.records).length);
+                // alert(JSON.stringify(this.records));
+                alert(this.memberCount);
             }
         },
     }
